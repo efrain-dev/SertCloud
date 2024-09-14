@@ -36,6 +36,6 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-Route::resource('clientes', \App\Http\Controllers\ClienteController::class);
+Route::resource('clientes', \App\Http\Controllers\ClienteController::class)->middleware('auth');
 
 require __DIR__.'/auth.php';
