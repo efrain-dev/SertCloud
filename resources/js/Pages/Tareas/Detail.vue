@@ -14,6 +14,10 @@ defineProps({
         type: Object,
         required: true,
     },
+    history: {
+        type: Object,
+        required: true,
+    },
 })
 
 const deleteItem = id => {
@@ -56,6 +60,27 @@ const deleteItem = id => {
                     </div>
                 </div>
             </div>
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-4">
+                <table class="table-auto w-full">
+                    <thead class="text-xs font-semibold uppercase text-gray-400 bg-gray-50">
+                    <tr>
+                        <th class="px-4 py-2">Estado</th>
+                        <th class="px-4 py-2">Usuario</th>
+                        <th class="px-4 py-2">Fecha</th>
+                    </tr>
+                    </thead>
+                    <tbody class="text-sm divide-y divide-gray-100">
+                    <template v-for="item in history">
+                        <tr>
+                            <td class="border px-4">{{ item.estado }}</td>
+                            <td class="border px-4">{{ item.usuario }}</td>
+                            <td class="border px-4">{{ item.created_at }}</td>
+                        </tr>
+                    </template>
+                    </tbody>
+                </table>
+            </div>
+
         </div>
     </AuthenticatedLayout>
 </template>

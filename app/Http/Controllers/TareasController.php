@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\PostRequestEmpleados;
 use App\Http\Requests\PostRequestTareas;
 use App\Models\Cliente;
+use App\Models\HistoryTareas;
 use App\Models\Tareas;
 use App\Models\User;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -42,16 +44,31 @@ class TareasController extends Controller
 
     public function store(PostRequestTareas $request)
     {
-        $data = $request->validated();
-        $data['id_user'] = Auth::user()->id;
-        $tareas = Tareas::create($data);
-        return redirect()->route('tareas.show', $tareas);
+
+        try {
+           return DB::transaction(function () use ($request) {
+                $data = $request->validated();
+                $data['id_user'] = Auth::user()->id;
+                $tareas = Tareas::create($data);
+                HistoryTareas::create(['id_tarea'=>$tareas->id,'id_user'=>$data['id_user'],'estado'=>$data['estado']]);
+                return redirect()->route('tareas.show', $tareas);
+            });
+        } catch (Exception $e) {
+            return redirect()->route('tareas.index');
+        }
     }
 
     public function show(Tareas $tarea)
     {
+        $history = DB::table('history_tareas as h')
+            ->leftJoin('users', 'users.id', '=', 'h.id_user')
+            ->select('h.*', 'users.name as usuario')
+            ->where('h.id_tarea',$tarea->id)
+            ->orderBy('h.created_at', 'ASC')
+            ->get();
         return inertia('Tareas/Detail', [
-            'tarea' => $tarea
+            'tarea' => $tarea,
+            'history'=>$history
         ]);
     }
 
@@ -64,9 +81,18 @@ class TareasController extends Controller
 
     public function update(PostRequestTareas $request, Tareas $tarea)
     {
-        $data = $request->validated();
-        $tarea->update($data);
-        return redirect()->route('tareas.show', $tarea);
+
+        try {
+            return DB::transaction(function () use ($request,$tarea) {
+                $data = $request->validated();
+                $tarea->update($data);
+                $data['id_user'] = Auth::user()->id;
+                HistoryTareas::create(['id_tarea'=>$tarea->id,'id_user'=>$data['id_user'],'estado'=>$data['estado']]);
+                return redirect()->route('tareas.show', $tarea);
+            });
+        } catch (Exception $e) {
+            return redirect()->route('tareas.index');
+        }
     }
 
     public function destroy(Tareas $tarea)
