@@ -38,5 +38,6 @@ Route::middleware('auth')->group(function () {
 });
 Route::resource('clientes', \App\Http\Controllers\ClienteController::class)->middleware('auth');
 Route::resource('empleados', \App\Http\Controllers\EmpleadoController::class)->middleware('auth');
+Route::resource('tareas', \App\Http\Controllers\TareasController::class)->middleware('auth');
 
 require __DIR__.'/auth.php';
