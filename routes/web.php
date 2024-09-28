@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PlannerController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -39,5 +40,5 @@ Route::middleware('auth')->group(function () {
 Route::resource('clientes', \App\Http\Controllers\ClienteController::class)->middleware('auth');
 Route::resource('empleados', \App\Http\Controllers\EmpleadoController::class)->middleware('auth');
 Route::resource('tareas', \App\Http\Controllers\TareasController::class)->middleware('auth');
-
+Route::get('/planner', [PlannerController::class, 'index'])->middleware(['auth', 'verified'])->name('planner');
 require __DIR__.'/auth.php';
