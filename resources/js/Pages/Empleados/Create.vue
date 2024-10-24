@@ -13,7 +13,7 @@ const form = useForm({
     email: '',
     password: '',
     role: '',
-    selectRole:[ {'value':'empleado', 'text':'Empleado'} ,{'value':'administrador', 'text':'Administrador'}]
+    selectRole:[ {'value':'gestor', 'text':'Gestor'} ,{'value':'administrador', 'text':'Administrador'},{'value':'admin', 'text':'Admin'}]
 });
 </script>
 

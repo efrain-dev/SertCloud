@@ -21,7 +21,7 @@ const form = useForm({
     email: props.empleado.email,
     role: props.empleado.role,
     password: '',
-    selectRole:[ {'value':'empleado', 'text':'Empleado'} ,{'value':'administrador', 'text':'Administrador'}]
+    selectRole:[ {'value':'gestor', 'text':'Gestor'} ,{'value':'administrador', 'text':'Administrador'},{'value':'admin', 'text':'Admin'}]
 });
 </script>
 

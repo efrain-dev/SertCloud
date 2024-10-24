@@ -5,9 +5,15 @@ export default {
 </script>
 
 <script setup>
+import { computed } from 'vue'
+
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Inertia } from "@inertiajs/inertia";
 import { Link } from '@inertiajs/inertia-vue3';
+import { usePage } from '@inertiajs/vue3'
+const page = usePage()
+
+const user = computed(() => page.props.auth.user)
 
 defineProps({
     tareas: {
@@ -42,6 +48,8 @@ const deleteProject = id => {
                             >
                                 Ingresar una Tarea
                             </Link>
+                            {{user.role}} XD
+
                         </div>
                         <div class="mt-4">
                             <table class="table-auto w-full">
