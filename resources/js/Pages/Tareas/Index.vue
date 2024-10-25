@@ -48,8 +48,6 @@ const deleteProject = id => {
                             >
                                 Ingresar una Tarea
                             </Link>
-                            {{user.role}} XD
-
                         </div>
                         <div class="mt-4">
                             <table class="table-auto w-full">

@@ -22,14 +22,17 @@ class TareasController extends Controller
      */
     public function index(): Response
     {
-        $tareas = DB::table('tareas as t')
+        $query = DB::table('tareas as t')
             ->leftJoin('clientes', 'clientes.id', '=', 't.id_cliente')
             ->leftJoin('users', 'users.id', '=', 't.id_user')
             ->leftJoin('users as empleado', 'empleado.id', '=', 't.id_empleado')
             ->select('t.*','clientes.nombre as cliente', 'users.name as usuario', 'empleado.name as empleado')
-            ->orderBy('t.fecha_entrega', 'ASC')
-            ->paginate(10);
-
+            ->orderBy('t.fecha_entrega', 'ASC');
+        if (auth()->user()->role='administrador'){
+            $tareas = $query->paginate(10);
+        }else{
+            $tareas = $query->where('t.id_user','=',auth()->user()->id)->paginate(10);
+        }
         return inertia('Tareas/Index', [
             'tareas' => $tareas
         ]);
