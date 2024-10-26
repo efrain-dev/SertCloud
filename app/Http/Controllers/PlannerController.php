@@ -19,10 +19,9 @@ class PlannerController extends Controller
             ->leftJoin('clientes', 'clientes.id', '=', 't.id_cliente')
             ->leftJoin('users', 'users.id', '=', 't.id_user')
             ->leftJoin('users as empleado', 'empleado.id', '=', 't.id_empleado')
-            ->select(  't.id', DB::raw("CONCAT(clientes.nombre,' ', t.descripcion) as title"),'t.fecha_entrega as date')
+            ->select(  't.id', DB::raw("CONCAT(clientes.nombre,' ', t.descripcion) as title"),'t.fecha_entrega as date','t.estado')
             ->orderBy('t.fecha_entrega', 'ASC');
-
-        if (auth()->user()->role='administrador'){
+        if (auth()->user()->role=='administrador'){
             $tareas = $query->get();
         }else{
             $tareas = $query->where('t.id_user','=',auth()->user()->id)->get();

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\DocumentosController;
 use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\PlannerController;
 use App\Http\Controllers\ProfileController;
@@ -47,6 +48,15 @@ Route::middleware('auth')->group(function () {
         Route::get('/{cliente}/edit', [ClienteController::class, 'edit'])->name('clientes.edit')->middleware('roles:admin,administrador');
         Route::put('/{cliente}', [ClienteController::class, 'update'])->name('clientes.update')->middleware('roles:admin,administrador');
         Route::delete('/{cliente}', [ClienteController::class, 'destroy'])->name('clientes.destroy')->middleware('roles:admin,administrador');
+    });
+    Route::prefix('/documentos/{cliente}')->group(function () {
+        Route::get('', [DocumentosController::class, 'index'])->name('documentos.index')->middleware('roles:admin,administrador,gestor');
+        Route::get('/create', [DocumentosController::class, 'create'])->name('documentos.create')->middleware('roles:admin,administrador');
+        Route::post('', [DocumentosController::class, 'store'])->name('documentos.store')->middleware('roles:admin,administrador');
+        Route::get('/{documento}', [DocumentosController::class, 'show'])->name('documentos.show')->middleware('roles:admin,administrador,gestor');
+        Route::get('/{documento}/edit', [DocumentosController::class, 'edit'])->name('documentos.edit')->middleware('roles:admin,administrador');
+        Route::put('/{documento}', [DocumentosController::class, 'update'])->name('documentos.update')->middleware('roles:admin,administrador');
+        Route::delete('/{documento}', [DocumentosController::class, 'destroy'])->name('documentos.destroy')->middleware('roles:admin,administrador');
     });
     Route::prefix('/empleados')->group(function () {
         Route::get('', [EmpleadoController::class, 'index'])->name('empleados.index')->middleware('roles:admin,administrador');

@@ -63,7 +63,7 @@ const deleteProject = id => {
                                             <td class="border px-4">{{ item.email }}</td>
                                             <td class="border px-4">{{ item.celular }}</td>
                                             <td class="border px-4">{{ item.documento }}</td>
-                                            <td class="border px-4 py-4" style="width: 300px">
+                                            <td class="border px-4 py-4" >
                                                 <Link
                                                     :href="route('clientes.edit', item.id)"
                                                     class="bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded"
@@ -77,11 +77,19 @@ const deleteProject = id => {
                                                     Ver
                                                 </Link>
                                                 <Link
+                                                    :href="route('documentos.index', item.id)"
+                                                    class="ml-2 bg-amber-200 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded"
+                                                >
+                                                    Documentos
+                                                </Link>
+
+                                                <Link
                                                     class="ml-2 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
                                                     @click="deleteProject(item.id)"
                                                 >
                                                     Eliminar
                                                 </Link>
+
                                             </td>
                                         </tr>
                                     </template>

@@ -52,7 +52,9 @@ defineProps({
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                     <FullCalendar :options="calendarOptions" >
                         <template v-slot:eventContent='arg'>
-                            <b  @click="handleEventClick(arg.event.id)">{{ arg.event.title }}</b>
+                            <div  :class="arg.event.extendedProps.estado =='terminado'?'bg-gray-600':''">
+                                <b  @click="handleEventClick(arg.event.id)">{{ arg.event.title }} </b>
+                            </div>
                         </template>
                     </FullCalendar>
                 </div>

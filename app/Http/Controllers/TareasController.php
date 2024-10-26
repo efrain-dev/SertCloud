@@ -28,7 +28,7 @@ class TareasController extends Controller
             ->leftJoin('users as empleado', 'empleado.id', '=', 't.id_empleado')
             ->select('t.*','clientes.nombre as cliente', 'users.name as usuario', 'empleado.name as empleado')
             ->orderBy('t.fecha_entrega', 'ASC');
-        if (auth()->user()->role='administrador'){
+        if (auth()->user()->role=='administrador'){
             $tareas = $query->paginate(10);
         }else{
             $tareas = $query->where('t.id_user','=',auth()->user()->id)->paginate(10);
