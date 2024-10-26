@@ -47,12 +47,11 @@ class DocumentosController extends Controller
                 if ($request->hasFile('imagen')) {
                     $data['imagen'] = $request->file('imagen')->move('documentos', $request->file('imagen')->getClientOriginalName());
                 }
-
-
                 $documento = Documento::create($data);
                 return redirect()->route('documentos.show', [$cliente, $documento]);
             });
         } catch (Exception $e) {
+            dd($e->getMessage());
             return redirect()->route('documentos.index', $cliente);
         }
     }
