@@ -24,7 +24,7 @@ class PlannerController extends Controller
         if (auth()->user()->role=='administrador'){
             $tareas = $query->get();
         }else{
-            $tareas = $query->where('t.id_user','=',auth()->user()->id)->get();
+            $tareas = $query->where('t.id_empleado','=',auth()->user()->id)->get();
         }
         return inertia('Planner/Index', compact('tareas'));
     }
