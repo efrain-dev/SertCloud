@@ -51,7 +51,6 @@ class DocumentosController extends Controller
                 return redirect()->route('documentos.show', [$cliente, $documento]);
             });
         } catch (Exception $e) {
-            dd($e->getMessage());
             return redirect()->route('documentos.index', $cliente);
         }
     }

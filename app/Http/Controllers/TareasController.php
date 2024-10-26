@@ -31,7 +31,7 @@ class TareasController extends Controller
         if (auth()->user()->role=='administrador'){
             $tareas = $query->paginate(10);
         }else{
-            $tareas = $query->where('t.id_user','=',auth()->user()->id)->paginate(10);
+            $tareas = $query->where('t.id_empleado','=',auth()->user()->id)->paginate(10);
         }
         return inertia('Tareas/Index', [
             'tareas' => $tareas
