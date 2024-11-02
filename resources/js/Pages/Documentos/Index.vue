@@ -46,6 +46,8 @@ const deleteDocument = (cliente,id) => {
                             >
                                 Ingresar Documento
                             </Link>
+                            <Link :href="route('clientes.index')" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Volver</Link>
+
                         </div>
                         <div class="mt-4" style="overflow: auto">
                             <table class="table-auto w-full">
