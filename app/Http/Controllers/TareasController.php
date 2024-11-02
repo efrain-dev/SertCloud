@@ -77,7 +77,7 @@ class TareasController extends Controller
 
     public function edit(Tareas $tarea): Response
     {
-        $empleados = User::where('role','=','empleado')->select('id as value','name as text')->get();
+        $empleados = User::where('role','=','gestor')->select('id as value','name as text')->get();
         $clientes = Cliente::select('id as value','nombre as text')->get();
         return inertia('Tareas/Edit', compact('tarea','empleados','clientes'));
     }

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PostRequestClientes;
 use App\Models\Cliente;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use Inertia\Response;
 
 class ClienteController extends Controller
@@ -12,9 +12,20 @@ class ClienteController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        $clientes = Cliente::orderBy('id','asc')->paginate(2);
+        $search = $request->input('search');
+
+        $clientes = Cliente::query()
+            ->when($search, function ($query, $search) {
+                $query->where('nombre', 'like', '%' . $search . '%')
+                    ->orWhere('nit', 'like', '%' . $search . '%')
+                    ->orWhere('email', 'like', '%' . $search . '%')
+                    ->orWhere('celular', 'like', '%' . $search . '%')
+                    ->orWhere('documento', 'like', '%' . $search . '%');
+            })
+            ->orderBy('id', 'asc')
+            ->paginate(10);
         return inertia('Clientes/Index', [
             'clientes' => $clientes
         ]);

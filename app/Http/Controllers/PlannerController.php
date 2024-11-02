@@ -28,5 +28,48 @@ class PlannerController extends Controller
         }
         return inertia('Planner/Index', compact('tareas'));
     }
+    public function dashboard(): Response
+    {
+        // Consulta de tareas agrupadas por empleado y mes
+        $tareasPorEmpleado = DB::table('tareas as t')
+            ->join('users as empleado', 'empleado.id', '=', 't.id_empleado')
+            ->select(
+                DB::raw('empleado.name as empleado'),
+                DB::raw('MONTH(t.fecha_entrega) as mes'),
+                DB::raw('COUNT(t.id) as total_tareas')
+            )
+            ->groupBy('empleado.name', 'mes')
+            ->orderBy('mes')
+            ->get();
 
+        // Formateo de datos para el gráfico
+        $chartData = [];
+        $empleados = $tareasPorEmpleado->pluck('empleado')->unique();
+        $meses = range(1, 12); // Etiquetas para cada mes
+
+        $datasets = [];
+        foreach ($empleados as $empleado) {
+            $tareasPorMes = [];
+            foreach ($meses as $mes) {
+                $tareasMes = $tareasPorEmpleado->where('empleado', $empleado)->where('mes', $mes)->sum('total_tareas');
+                $tareasPorMes[] = $tareasMes;
+            }
+            $datasets[] = [
+                'label' => $empleado,
+                'data' => $tareasPorMes,
+                'backgroundColor' => 'rgba(54, 162, 235, 0.5)', // Color del gráfico
+                'borderColor' => 'rgba(54, 162, 235, 1)',
+                'borderWidth' => 1,
+            ];
+        }
+
+        $chartData = [
+            'labels' => array_map(fn($mes) => date("F", mktime(0, 0, 0, $mes, 1)), $meses),
+            'datasets' => $datasets,
+        ];
+
+        return inertia('Dashboard', [
+            'chartData' => $chartData,
+        ]);
+    }
 }

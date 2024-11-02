@@ -3,6 +3,7 @@
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\DocumentosController;
 use App\Http\Controllers\EmpleadoController;
+use App\Http\Controllers\OrdenesTrabajoController;
 use App\Http\Controllers\PlannerController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TareasController;
@@ -32,9 +33,8 @@ use Inertia\Inertia;
 Route::get('/', function () {
     return redirect()->route('login');
 });
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/dashboard', [PlannerController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -75,6 +75,15 @@ Route::middleware('auth')->group(function () {
         Route::get('/{tarea}/edit', [TareasController::class, 'edit'])->name('tareas.edit')->middleware('roles:admin,administrador');
         Route::put('/{tarea}', [TareasController::class, 'update'])->name('tareas.update')->middleware('roles:admin,administrador');
         Route::delete('/{tarea}', [TareasController::class, 'destroy'])->name('tareas.destroy')->middleware('roles:admin,administrador');
+    });
+    Route::prefix('/ordenes-trabajo')->group(function () {
+        Route::get('', [OrdenesTrabajoController::class, 'index'])->name('ordenes.index')->middleware('roles:admin,administrador,gestor');
+        Route::get('/create', [OrdenesTrabajoController::class, 'create'])->name('ordenes.create')->middleware('roles:admin,administrador');
+        Route::post('', [OrdenesTrabajoController::class, 'store'])->name('ordenes.store')->middleware('roles:admin,administrador');
+        Route::get('/{orden}', [OrdenesTrabajoController::class, 'show'])->name('ordenes.show')->middleware('roles:admin,administrador,gestor');
+        Route::get('/{orden}/edit', [OrdenesTrabajoController::class, 'edit'])->name('ordenes.edit')->middleware('roles:admin,administrador');
+        Route::put('/{orden}', [OrdenesTrabajoController::class, 'update'])->name('ordenes.update')->middleware('roles:admin,administrador');
+        Route::delete('/{orden}', [OrdenesTrabajoController::class, 'destroy'])->name('ordenes.destroy')->middleware('roles:admin,administrador');
     });
 });
 Route::get('/planner', [PlannerController::class, 'index'])->middleware(['auth', 'verified'])->name('planner')->middleware('roles:admin,administrador,gestor');;
