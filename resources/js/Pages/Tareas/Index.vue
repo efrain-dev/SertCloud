@@ -112,7 +112,7 @@ const deleteProject = id => {
                                     class="text-xs font-semibold uppercase text-gray-400 bg-gray-50"
                                 >
                                     <tr>
-                                        <td colspan="4" class="border px-4 py-4 text-right">
+                                        <td colspan="7" class="border px-4 py-4 text-right">
                                             <Link
                                                 v-if="tareas.current_page > 1"
                                                 :href="tareas.prev_page_url"

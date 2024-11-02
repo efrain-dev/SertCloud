@@ -93,7 +93,7 @@ const deleteDocument = (cliente,id) => {
                                     class="text-xs font-semibold uppercase text-gray-400 bg-gray-50"
                                 >
                                 <tr>
-                                    <td colspan="3" class="border px-4 py-4 text-right">
+                                    <td colspan="2" class="border px-4 py-4 text-right">
                                         <Link
                                             v-if="documentos.current_page > 1"
                                             :href="documentos.prev_page_url"
