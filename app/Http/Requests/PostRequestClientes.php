@@ -23,9 +23,9 @@ class PostRequestClientes extends FormRequest
     {
         return [
             'nombre' => 'required|string|max:255',
-            'nit' => 'required',
-            'email' => 'required',
-            'celular' => 'required',
+            'nit' => ['required', 'regex:/^(CF|\d+)$/'],
+            'email' => 'required|email',
+            'celular' => ['required', 'regex:/^\d+$/'], // Solo permite números
             'documento' => 'required',
         ];
     }

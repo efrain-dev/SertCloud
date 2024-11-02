@@ -34,10 +34,16 @@ class ClienteController extends Controller
     {
         return inertia('Clientes/Create');
     }
-    public function store(PostRequestClientes $request)
+    public function store(Request $request)
     {
 
-       $cliente =  Cliente::create($request->validated());
+        $cliente =  Cliente::create($request->validate([
+            'nombre' => 'required|string|max:255',
+            'nit' => ['required', 'regex:/^(CF|\d+)$/'],
+            'email' => 'required|email',
+            'celular' => ['required', 'regex:/^\d+$/'], // Solo permite números
+            'documento' => 'required',
+        ]));
         return redirect()->route('clientes.show', $cliente);
     }
 
